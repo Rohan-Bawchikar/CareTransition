@@ -10,7 +10,7 @@ export class StorageService {
     FOLLOW_UPS: 'caretransition_followups',
     RECOVERY_TASKS: 'caretransition_tasks',
     DISCHARGE_PLANS: 'caretransition_discharge_plans',
-    INITIALIZED: 'caretransition_initialized_v2'
+    INITIALIZED: 'caretransition_initialized_v3'
   } as const;
 
   getItem<T>(key: string, defaultValue: T): T {

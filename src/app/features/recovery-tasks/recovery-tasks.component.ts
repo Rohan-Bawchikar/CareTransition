@@ -9,7 +9,7 @@ import { RecoveryTask, TaskCategory } from '../../core/models/recovery-task.mode
 import { ProgressCardComponent } from '../../shared/components/progress-card/progress-card.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { getLocalISODate, parseLocalDate } from '../../core/utils/date-utils';
+import { getAppCurrentDate, getLocalISODate, parseLocalDate } from '../../core/utils/date-utils';
 
 export interface EnrichedTaskItem {
   task: RecoveryTask;
@@ -741,7 +741,7 @@ export class RecoveryTasksComponent {
   readonly enrichedTasks = computed<EnrichedTaskItem[]>(() => {
     const list = this.taskService.tasks();
     const patients = this.patientService.patients();
-    const today = new Date();
+    const today = getAppCurrentDate();
     today.setHours(0, 0, 0, 0);
 
     return list.map(task => {

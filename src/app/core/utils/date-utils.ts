@@ -6,9 +6,17 @@
  */
 
 /**
+ * Returns the baseline application reference date in February 2026.
+ * Month is 1 (February) in 0-indexed JavaScript Date.
+ */
+export function getAppCurrentDate(): Date {
+  return new Date(2026, 1, 18, 10, 0, 0);
+}
+
+/**
  * Returns today's date (or the given date) in YYYY-MM-DD format using local time.
  */
-export function getLocalISODate(date: Date = new Date()): string {
+export function getLocalISODate(date: Date = getAppCurrentDate()): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -20,7 +28,7 @@ export function getLocalISODate(date: Date = new Date()): string {
  * avoiding UTC-induced day-shifting in positive/negative timezones.
  */
 export function parseLocalDate(dateStr: string): Date {
-  if (!dateStr) return new Date();
+  if (!dateStr) return getAppCurrentDate();
   if (dateStr.includes('T')) {
     return new Date(dateStr);
   }
@@ -34,13 +42,13 @@ export function parseLocalDate(dateStr: string): Date {
     return d;
   }
   const parsed = new Date(dateStr);
-  return isNaN(parsed.getTime()) ? new Date() : parsed;
+  return isNaN(parsed.getTime()) ? getAppCurrentDate() : parsed;
 }
 
 /**
  * Returns the date in YYYY-MM-DDTHH:mm format using local time.
  */
-export function getLocalISODateTime(date: Date = new Date(), hours = 10, minutes = 0): string {
+export function getLocalISODateTime(date: Date = getAppCurrentDate(), hours = 10, minutes = 0): string {
   const d = new Date(date);
   d.setHours(hours, minutes, 0, 0);
   const year = d.getFullYear();
@@ -52,18 +60,18 @@ export function getLocalISODateTime(date: Date = new Date(), hours = 10, minutes
 }
 
 /**
- * Calculates a date offset from today by a given number of days.
+ * Calculates a date offset from reference date by a given number of days.
  */
-export function getOffsetISODate(offsetDays: number, baseDate: Date = new Date()): string {
+export function getOffsetISODate(offsetDays: number, baseDate: Date = getAppCurrentDate()): string {
   const d = new Date(baseDate);
   d.setDate(d.getDate() + offsetDays);
   return getLocalISODate(d);
 }
 
 /**
- * Calculates a datetime offset from today by a given number of days.
+ * Calculates a datetime offset from reference date by a given number of days.
  */
-export function getOffsetISODateTime(offsetDays: number, hours = 10, minutes = 0, baseDate: Date = new Date()): string {
+export function getOffsetISODateTime(offsetDays: number, hours = 10, minutes = 0, baseDate: Date = getAppCurrentDate()): string {
   const d = new Date(baseDate);
   d.setDate(d.getDate() + offsetDays);
   return getLocalISODateTime(d, hours, minutes);

@@ -22,7 +22,7 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { JourneyStepperComponent, JourneyStep } from '../../../shared/components/journey-stepper/journey-stepper.component';
 import { PatientFormComponent } from '../patient-form/patient-form.component';
-import { getLocalISODate, getLocalISODateTime, parseLocalDate, formatReadableDateTime } from '../../../core/utils/date-utils';
+import { getAppCurrentDate, getLocalISODate, getLocalISODateTime, getOffsetISODateTime, parseLocalDate, formatReadableDateTime } from '../../../core/utils/date-utils';
 
 @Component({
   selector: 'app-patient-detail',
@@ -2148,7 +2148,7 @@ export class PatientDetailComponent implements OnInit {
   isTaskOverdue(task: RecoveryTask): boolean {
     if (task.completed) return false;
     const due = parseLocalDate(task.dueDate);
-    const today = new Date();
+    const today = getAppCurrentDate();
     today.setHours(0, 0, 0, 0);
     return due.getTime() < today.getTime();
   }
@@ -2286,10 +2286,7 @@ export class PatientDetailComponent implements OnInit {
   // --- Follow-Up Actions ---
   openAddFollowUpModal(): void {
     this.editingFollowUp = undefined;
-    const now = new Date();
-    now.setDate(now.getDate() + 3);
-    const pad = (n: number) => (n < 10 ? '0' + n : '' + n);
-    const defaultDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T10:00`;
+    const defaultDateTime = getOffsetISODateTime(3, 10, 0);
 
     this.followUpForm.reset({
       title: '',

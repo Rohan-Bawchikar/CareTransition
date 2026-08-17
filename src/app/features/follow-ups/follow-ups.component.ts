@@ -9,7 +9,7 @@ import { FollowUp, FollowUpStatus } from '../../core/models/follow-up.model';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { getLocalISODate, parseLocalDate } from '../../core/utils/date-utils';
+import { getAppCurrentDate, getLocalISODate, getOffsetISODateTime, parseLocalDate } from '../../core/utils/date-utils';
 
 export interface FollowUpItem {
   followUp: FollowUp;
@@ -811,10 +811,7 @@ export class FollowUpsComponent {
   }
 
   private initForm(): void {
-    const now = new Date();
-    now.setDate(now.getDate() + 3);
-    const pad = (n: number) => (n < 10 ? '0' + n : '' + n);
-    const defaultDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T10:00`;
+    const defaultDateTime = getOffsetISODateTime(3, 10, 0);
 
     this.followUpForm = this.fb.group({
       patientId: ['', Validators.required],
@@ -918,10 +915,7 @@ export class FollowUpsComponent {
   openAddModal(): void {
     this.editingFollowUp = undefined;
     const firstPat = this.patientService.patients()[0];
-    const now = new Date();
-    now.setDate(now.getDate() + 3);
-    const pad = (n: number) => (n < 10 ? '0' + n : '' + n);
-    const defaultDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T10:00`;
+    const defaultDateTime = getOffsetISODateTime(3, 10, 0);
 
     this.followUpForm.reset({
       patientId: firstPat ? firstPat.id : '',

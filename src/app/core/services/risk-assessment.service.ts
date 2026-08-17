@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FollowUp } from '../models/follow-up.model';
 import { RecoveryTask } from '../models/recovery-task.model';
 import { RiskLevel, RiskSummary } from '../models/risk-summary.model';
-import { parseLocalDate } from '../utils/date-utils';
+import { getAppCurrentDate, parseLocalDate } from '../utils/date-utils';
 
 /**
  * RiskAssessmentService
@@ -34,7 +34,7 @@ export class RiskAssessmentService {
     patientTasks: RecoveryTask[],
     dischargeDateStr?: string
   ): RiskSummary {
-    const today = new Date();
+    const today = getAppCurrentDate();
     today.setHours(0, 0, 0, 0);
 
     // 1. Analyze Follow-Ups

@@ -2,7 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { FollowUp, FollowUpStatus } from '../models/follow-up.model';
 import { StorageService } from './storage.service';
 import { getInitialFollowUps } from '../data/seed-data';
-import { parseLocalDate } from '../utils/date-utils';
+import { getAppCurrentDate, parseLocalDate } from '../utils/date-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,7 @@ export class FollowUpService {
   }
 
   private harmonizeStatuses(list: FollowUp[]): FollowUp[] {
-    const now = new Date();
+    const now = getAppCurrentDate();
     return list.map(f => {
       if (f.status === 'completed' || f.status === 'cancelled') {
         return f;
@@ -63,7 +63,7 @@ export class FollowUpService {
 
   addFollowUp(data: Omit<FollowUp, 'id'>): FollowUp {
     const appt = parseLocalDate(data.appointmentDate);
-    const now = new Date();
+    const now = getAppCurrentDate();
     let computedStatus: FollowUpStatus = data.status || 'upcoming';
     if (computedStatus !== 'completed' && computedStatus !== 'cancelled' && appt.getTime() < now.getTime()) {
       computedStatus = 'overdue';

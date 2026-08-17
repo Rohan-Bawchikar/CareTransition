@@ -6,7 +6,7 @@ import { RiskAssessmentService } from './risk-assessment.service';
 import { Patient } from '../models/patient.model';
 import { FollowUp } from '../models/follow-up.model';
 import { RiskSummary } from '../models/risk-summary.model';
-import { getLocalISODate, parseLocalDate } from '../utils/date-utils';
+import { getAppCurrentDate, getLocalISODate, parseLocalDate } from '../utils/date-utils';
 
 export interface PatientAttentionItem {
   patient: Patient;
@@ -34,9 +34,9 @@ export class DashboardService {
 
   // Computed: Discharged in last 7 days
   readonly recentDischarges = computed(() => {
-    const today = new Date();
+    const today = getAppCurrentDate();
     today.setHours(23, 59, 59, 999);
-    const sevenDaysAgo = new Date();
+    const sevenDaysAgo = getAppCurrentDate();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     sevenDaysAgo.setHours(0, 0, 0, 0);
 
