@@ -1,0 +1,28 @@
+<div class="app-layout">
+  <!-- Sidebar Navigation -->
+  <app-sidebar 
+    [isOpen]="isSidebarOpen()" 
+    (closeSidebar)="closeSidebar()"
+  ></app-sidebar>
+
+  <!-- Mobile Backdrop Overlay -->
+  @if (isSidebarOpen()) {
+    <div class="mobile-backdrop" (click)="closeSidebar()"></div>
+  }
+
+  <!-- Main Application Wrapper -->
+  <div class="app-main-wrapper">
+    <!-- Navbar Header -->
+    <app-navbar 
+      (toggleSidebar)="toggleSidebar()"
+    ></app-navbar>
+
+    <!-- Router Content Area -->
+    <main class="app-main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Reactive Toast Notifications -->
+  <app-toast></app-toast>
+</div>
